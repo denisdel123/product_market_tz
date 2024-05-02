@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "product-market-tz"
+version = "0.1.0"
+description = ""
+authors = ["denisbelenko <denisdel123@>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ipython = "^8.24.0"
+pillow = "^10.3.0"
+psycopg2 = "^2.9.9"
+django = "^5.0.4"
+djangorestframework = "^3.15.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.0"
+python-dotenv = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
