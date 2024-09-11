@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.text import slugify
+
+from transliterate import translit, slugify
 
 from app.constants import NULLABLE
 
@@ -22,8 +23,11 @@ class Category(models.Model):
     )
 
     def save(self, *args, **kwargs):
+
         if not self.slug:
-            self.slug = slugify(self.name)
+            transliterated_name = translit(self.name, language_code='ru', reversed=False)
+            self.slug = slugify(transliterated_name)
+            print(f'Saving category with slug: {self.slug}')
         super().save(*args, **kwargs)
 
     def __str__(self):
