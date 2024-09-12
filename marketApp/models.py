@@ -11,7 +11,8 @@ class Category(models.Model):
     photo = models.ImageField(
         upload_to='category/',
         help_text='Загрузите картинку',
-        **NULLABLE
+        **NULLABLE,
+        verbose_name='Картинка'
     )
     name = models.CharField(
         max_length=30,
@@ -22,7 +23,8 @@ class Category(models.Model):
     slug = models.SlugField(
         max_length=30,
         unique=True,
-        **NULLABLE
+        **NULLABLE,
+        verbose_name='slug'
     )
 
     def save(self, *args, **kwargs):
@@ -63,7 +65,8 @@ class Subcategory(models.Model):
     slug = models.SlugField(
         max_length=30,
         unique=True,
-        **NULLABLE
+        **NULLABLE,
+        verbose_name='slug'
     )
 
     def save(self, *args, **kwargs):
@@ -78,4 +81,49 @@ class Subcategory(models.Model):
     class Meta:
         verbose_name = 'Подкатегория'
         verbose_name_plural = 'Подкатегории'
+        ordering = ['name']
+
+
+class Product(models.Model):
+    photo = models.ImageField(
+        upload_to='product/',
+        verbose_name='Картинка',
+        help_text='Загрузите картинку'
+    )
+    name = models.CharField(
+        max_length=30,
+        verbose_name='Продукт',
+        help_text='Введите наименование',
+
+    )
+
+    price = models.PositiveIntegerField(
+        verbose_name='Стоимость',
+        help_text='Введите стоимость'
+    )
+    slug = models.SlugField(
+        max_length=30,
+        verbose_name='slug',
+        **NULLABLE
+    )
+    associated_subcategory = models.ForeignKey(
+        Subcategory,
+        on_delete=models.CASCADE,
+        related_name='related_subcategory',
+        verbose_name='Подкатегории',
+        help_text='выберете категорию'
+    )
+
+    def save(self, *args, **kwargs):
+        transliterated_name = translit(self.name, language_code='ru', reversed=False)
+        self.slug = slugify(transliterated_name)
+        print(f'Saving category with slug: {self.slug}')
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'продукт'
+        verbose_name_plural = 'Продукты'
         ordering = ['name']
