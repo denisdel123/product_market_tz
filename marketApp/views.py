@@ -2,7 +2,8 @@ from rest_framework import generics
 
 from marketApp.models import Category, Subcategory
 from marketApp.paginators import MarketPaginator
-from marketApp.serializers import CategorySerializer, SubcategorySerializer, SubcategoryViewSerializer
+from marketApp.serializers import CategorySerializer, SubcategorySerializer, SubcategoryViewSerializer, \
+    CategoryViewSerializer
 
 
 class CategoryCreateAPIView(generics.CreateAPIView):
@@ -12,7 +13,7 @@ class CategoryCreateAPIView(generics.CreateAPIView):
 
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    serializer_class = CategoryViewSerializer
     pagination_class = MarketPaginator
 
 

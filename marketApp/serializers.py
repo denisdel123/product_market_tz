@@ -6,6 +6,12 @@ from marketApp.models import Category, Subcategory
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        exclude = ['slug']
+
+
+class CategoryViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
         fields = '__all__'
 
 
