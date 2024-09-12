@@ -26,10 +26,9 @@ class Category(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            transliterated_name = translit(self.name, language_code='ru', reversed=False)
-            self.slug = slugify(transliterated_name)
-            print(f'Saving category with slug: {self.slug}')
+        transliterated_name = translit(self.name, language_code='ru', reversed=False)
+        self.slug = slugify(transliterated_name)
+        print(f'Saving category with slug: {self.slug}')
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -68,10 +67,9 @@ class Subcategory(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            transliterated_name = translit(self.name, language_code='ru', reversed=False)
-            self.slug = slugify(transliterated_name)
-            print(f'Saving category with slug: {self.slug}')
+        transliterated_name = translit(self.name, language_code='ru', reversed=False)
+        self.slug = slugify(transliterated_name)
+        print(f'Saving category with slug: {self.slug}')
         super().save(*args, **kwargs)
 
     def __str__(self):
