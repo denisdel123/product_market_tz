@@ -8,6 +8,7 @@ from app.constants import NULLABLE
 class Category(models.Model):
     photo = models.ImageField(
         upload_to='category/',
+        help_text='Загрузите картинку',
         **NULLABLE
     )
     name = models.CharField(
