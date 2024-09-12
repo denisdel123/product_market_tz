@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 
 from transliterate import translit, slugify
@@ -52,11 +54,6 @@ class Subcategory(models.Model):
         help_text='Введите наименование',
         unique=True
     )
-    slug = models.SlugField(
-        max_length=30,
-        unique=True,
-        **NULLABLE
-    )
     associated_category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -64,12 +61,18 @@ class Subcategory(models.Model):
         related_name='related_category',
         help_text='Выберете категорию'
     )
+    slug = models.SlugField(
+        max_length=30,
+        unique=True,
+        **NULLABLE
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
             transliterated_name = translit(self.name, language_code='ru', reversed=False)
-            self.slug = transliterated_name
-        return super().save(*args, **kwargs)
+            self.slug = slugify(transliterated_name)
+            print(f'Saving category with slug: {self.slug}')
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name}'
