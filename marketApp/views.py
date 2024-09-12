@@ -6,6 +6,7 @@ from marketApp.serializers import CategorySerializer, SubcategorySerializer, Sub
     CategoryViewSerializer
 
 
+# Эндпоинты Категорий
 class CategoryCreateAPIView(generics.CreateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
@@ -26,6 +27,7 @@ class CategoryDestroyAPIView(generics.DestroyAPIView):
     queryset = Category.objects.all()
 
 
+# Эндпоинты подкатегорий
 class SubcategoryCreateAPIView(generics.CreateAPIView):
     queryset = Subcategory
     serializer_class = SubcategorySerializer
@@ -34,3 +36,13 @@ class SubcategoryCreateAPIView(generics.CreateAPIView):
 class SubcategoryListAPIView(generics.ListAPIView):
     queryset = Subcategory.objects.all()
     serializer_class = SubcategoryViewSerializer
+    pagination_class = MarketPaginator
+
+
+class SubcategoryUpdateAPIView(generics.UpdateAPIView):
+    queryset = Subcategory.objects.all()
+    serializer_class = SubcategorySerializer
+
+
+class SubcategoryDestroyAPIView(generics.DestroyAPIView):
+    queryset = Subcategory.objects.all()
