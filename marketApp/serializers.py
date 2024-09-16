@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from marketApp.models import Category, Subcategory, Product
+from marketApp.models import Category, Subcategory, Product, CartView
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -37,3 +37,11 @@ class ProductViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+
+class CartViewSerializer(serializers.ModelSerializer):
+    product_id = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), source='product')
+
+    class Meta:
+        model = CartView
+        fields = ['product_id', 'quantity']
