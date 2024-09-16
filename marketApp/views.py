@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from marketApp.models import Category, Subcategory, Product, CartView
 from marketApp.paginators import MarketPaginator
 from marketApp.serializers import CategorySerializer, SubcategorySerializer, SubcategoryViewSerializer, \
-    CategoryViewSerializer, ProductSerializer, ProductViewSerializer
+    CategoryViewSerializer, ProductSerializer, ProductViewSerializer, CartViewSerializer
 
 
 # Эндпоинты Категорий
@@ -75,7 +75,8 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
     queryset = Product.objects.all()
 
 
-class CartViewAPIView(generics.CreateAPIView):
+class CartViewCreateAPIView(generics.CreateAPIView):
+    serializer_class = CartViewSerializer
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user)
@@ -84,7 +85,7 @@ class CartViewAPIView(generics.CreateAPIView):
         product = serializer.validated_data['product']
         quantity = serializer.validated_data['quantity']
 
-        cart_view, item_product = CartView.objects.get_or_create(user=self.request.user, product=product)
+        cart_view, item_product = CartView.objects.get_or_create(owner=self.request.user, product=product)
 
         if not item_product:
             cart_view.quantity += quantity
