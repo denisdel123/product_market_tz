@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from marketApp.models import Category, Subcategory, Product
+from marketApp.models import Category, Subcategory, Product, CartView
 from marketApp.paginators import MarketPaginator
 from marketApp.serializers import CategorySerializer, SubcategorySerializer, SubcategoryViewSerializer, \
     CategoryViewSerializer, ProductSerializer, ProductViewSerializer
@@ -71,3 +71,24 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 
 class ProductDestroyAPIView(generics.DestroyAPIView):
     queryset = Product.objects.all()
+
+
+class CartViewAPIView(generics.CreateAPIView):
+
+    def get_queryset(self):
+        return CartView.objects.filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        product = serializer.validated_data['product']
+        quantity = serializer.validated_data['quantity']
+
+        cart_view, item_product = CartView.objects.get_or_create(user=self.request.user, product=product)
+
+        if not item_product:
+            cart_view.quantity += quantity
+        else:
+            cart_view.quantity = quantity
+
+        cart_view.save()
+
+
