@@ -1,9 +1,9 @@
 from rest_framework import generics
 
-from marketApp.models import Category, Subcategory
+from marketApp.models import Category, Subcategory, Product
 from marketApp.paginators import MarketPaginator
 from marketApp.serializers import CategorySerializer, SubcategorySerializer, SubcategoryViewSerializer, \
-    CategoryViewSerializer
+    CategoryViewSerializer, ProductSerializer, ProductViewSerializer
 
 
 # Эндпоинты Категорий
@@ -46,3 +46,28 @@ class SubcategoryUpdateAPIView(generics.UpdateAPIView):
 
 class SubcategoryDestroyAPIView(generics.DestroyAPIView):
     queryset = Subcategory.objects.all()
+
+
+class ProductCreateAPIView(generics.CreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductViewSerializer
+    pagination_class = MarketPaginator
+
+
+class ProductRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductViewSerializer
+
+
+class ProductUpdateAPIView(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class ProductDestroyAPIView(generics.DestroyAPIView):
+    queryset = Product.objects.all()
