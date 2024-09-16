@@ -45,3 +45,9 @@ class CartViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartView
         fields = ['product_id', 'quantity']
+
+
+class CartViewListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartView
+        fields = '__all__'
