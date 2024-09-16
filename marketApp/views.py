@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from marketApp.models import Category, Subcategory, Product, CartView
 from marketApp.paginators import MarketPaginator
 from marketApp.serializers import CategorySerializer, SubcategorySerializer, SubcategoryViewSerializer, \
-    CategoryViewSerializer, ProductSerializer, ProductViewSerializer, CartViewSerializer
+    CategoryViewSerializer, ProductSerializer, ProductViewSerializer, CartViewSerializer, CartViewListSerializer
 
 
 # Эндпоинты Категорий
@@ -95,3 +95,6 @@ class CartViewCreateAPIView(generics.CreateAPIView):
         cart_view.save()
 
 
+class CartViewListAPIView(generics.ListAPIView):
+    queryset = CartView
+    serializer_class = CartViewListSerializer
