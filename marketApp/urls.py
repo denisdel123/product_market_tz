@@ -2,7 +2,8 @@ from django.urls import path
 
 from marketApp.apps import MarketappConfig
 from marketApp.views import CategoryCreateAPIView, CategoryListAPIView, CategoryUpdateAPIView, CategoryDestroyAPIView, \
-    SubcategoryCreateAPIView, SubcategoryListAPIView, SubcategoryUpdateAPIView, SubcategoryDestroyAPIView
+    SubcategoryCreateAPIView, SubcategoryListAPIView, SubcategoryUpdateAPIView, SubcategoryDestroyAPIView, \
+    ProductCreateAPIView, ProductListAPIView, ProductRetrieveAPIView, ProductUpdateAPIView, ProductDestroyAPIView
 
 app_name = MarketappConfig.name
 
@@ -18,4 +19,11 @@ urlpatterns = [
     path('subcategory/list/', SubcategoryListAPIView.as_view(), name='subcategory-list'),
     path('subcategory/update/<int:pk>/', SubcategoryUpdateAPIView.as_view(), name='subcategory-update'),
     path('subcategory/destroy/<int:pk>/', SubcategoryDestroyAPIView.as_view(), name='subcategory-destroy'),
+
+    # Product
+    path('product/create/', ProductCreateAPIView.as_view(), name='product-create'),
+    path('product/list/', ProductListAPIView.as_view(), name='product-list'),
+    path('product/retrieve/<int:pk>/', ProductRetrieveAPIView.as_view(), name='product-retrieve'),
+    path('product/update/<int:pk>/', ProductUpdateAPIView.as_view(), name='product-update'),
+    path('product/destroy/<int:pk>/', ProductDestroyAPIView.as_view(), name='product-destroy'),
 ]
