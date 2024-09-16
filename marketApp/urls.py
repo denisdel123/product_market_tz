@@ -4,7 +4,7 @@ from marketApp.apps import MarketappConfig
 from marketApp.views import CategoryCreateAPIView, CategoryListAPIView, CategoryUpdateAPIView, CategoryDestroyAPIView, \
     SubcategoryCreateAPIView, SubcategoryListAPIView, SubcategoryUpdateAPIView, SubcategoryDestroyAPIView, \
     ProductCreateAPIView, ProductListAPIView, ProductRetrieveAPIView, ProductUpdateAPIView, ProductDestroyAPIView, \
-    CartViewCreateAPIView
+    CartViewCreateAPIView, CartViewListAPIView
 
 app_name = MarketappConfig.name
 
@@ -30,4 +30,5 @@ urlpatterns = [
 
     # cartView
     path('cart-view/create/', CartViewCreateAPIView.as_view(), name='cart-view-create'),
+    path('cart-view/list/', CartViewListAPIView.as_view(), name='cart-view-list'),
 ]
