@@ -5,6 +5,7 @@ from django.db import models
 from transliterate import translit, slugify
 
 from app.constants import NULLABLE
+from usersApp.models import User
 
 
 class Category(models.Model):
@@ -127,3 +128,37 @@ class Product(models.Model):
         verbose_name = 'продукт'
         verbose_name_plural = 'Продукты'
         ordering = ['name']
+
+
+class CartView(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='related_owner',
+        verbose_name='Владелец'
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='related_product',
+        verbose_name='Продукт'
+    )
+    quantity = models.PositiveIntegerField(
+        default=1,
+        verbose_name='Количество'
+    )
+
+    def __str__(self):
+        return f'{self.product.name} (x{self.quantity})'
+
+    def get_total_price(self):
+        if self.quantity is not None and self.product.price is not None:
+            return self.quantity * self.product.price
+        return 0
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
+        ordering = ['product']
+
+
