@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from marketApp.models import Category, Subcategory, Product, CartView
 from marketApp.paginators import MarketPaginator
@@ -96,5 +97,25 @@ class CartViewCreateAPIView(generics.CreateAPIView):
 
 
 class CartViewListAPIView(generics.ListAPIView):
-    queryset = CartView
     serializer_class = CartViewListSerializer
+    pagination_class = MarketPaginator
+
+    def get_queryset(self):
+        return CartView.objects.filter(owner=self.request.user.pk)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Подсчитываем общее количество и общую стоимость
+        total_quantity = sum(item.quantity for item in queryset)
+        total_price = sum(item.get_total_price() for item in queryset)
+
+        # Формируем ответ
+        response_data = {
+            'items': serializer.data,  # Данные корзины
+            'total_quantity': total_quantity,  # Общее количество товаров
+            'total_price': total_price  # Общая стоимость товаров
+        }
+
+        return Response(response_data)
