@@ -89,7 +89,8 @@ class Product(models.Model):
     photo = models.ImageField(
         upload_to='product/',
         verbose_name='Картинка',
-        help_text='Загрузите картинку'
+        help_text='Загрузите картинку',
+        **NULLABLE
     )
     name = models.CharField(
         max_length=30,

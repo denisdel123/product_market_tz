@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from marketApp.models import Category, Subcategory, Product, CartView
 from marketApp.paginators import MarketPaginator
@@ -57,6 +58,7 @@ class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductViewSerializer
     pagination_class = MarketPaginator
+    permission_classes = [IsAuthenticated]
 
 
 class ProductRetrieveAPIView(generics.RetrieveAPIView):
