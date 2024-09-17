@@ -1,4 +1,5 @@
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -122,4 +123,27 @@ class CartViewListAPIView(generics.ListAPIView):
 
 
 class CartViewDestroyAPIView(generics.DestroyAPIView):
-    queryset = CartView.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = CartViewSerializer
+
+    def get_queryset(self):
+        return CartView.objects.filter(owner=self.request.user)
+
+    def get_object(self):
+        product_id = self.kwargs['pk']
+        return get_object_or_404(CartView, owner=self.request.user, product_id=product_id)
+
+    def perform_destroy(self, instance):
+        if instance.quantity > 1:
+            instance.quantity -= 1
+            instance.save()
+            return Response({
+                "message": "Количество товара уменьшено на 1.",
+                "quantity": instance.quantity
+            }, status=status.HTTP_200_OK)
+
+        else:
+            instance.delete()
+            return Response({"message": "Товар удалён из корзины."}, status=status.HTTP_204_NO_CONTENT)
+
+
