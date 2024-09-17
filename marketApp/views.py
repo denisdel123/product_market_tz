@@ -119,3 +119,7 @@ class CartViewListAPIView(generics.ListAPIView):
         }
 
         return Response(response_data)
+
+
+class CartViewDestroyAPIView(generics.DestroyAPIView):
+    queryset = CartView.objects.all()
