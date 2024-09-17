@@ -79,6 +79,7 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
 
 class CartViewCreateAPIView(generics.CreateAPIView):
     serializer_class = CartViewSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user)
@@ -100,6 +101,7 @@ class CartViewCreateAPIView(generics.CreateAPIView):
 class CartViewListAPIView(generics.ListAPIView):
     serializer_class = CartViewListSerializer
     pagination_class = MarketPaginator
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user.pk)
@@ -124,7 +126,6 @@ class CartViewListAPIView(generics.ListAPIView):
 
 class CartViewDestroyAPIView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = CartViewSerializer
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user)
@@ -148,6 +149,7 @@ class CartViewDestroyAPIView(generics.DestroyAPIView):
 
 
 class CartViewAllDestroyAPIView(generics.DestroyAPIView):
+    permission_classes = IsAuthenticated
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user)
