@@ -147,3 +147,12 @@ class CartViewDestroyAPIView(generics.DestroyAPIView):
             return Response({"message": "Товар удалён из корзины."}, status=status.HTTP_204_NO_CONTENT)
 
 
+class CartViewAllDestroyAPIView(generics.DestroyAPIView):
+
+    def get_queryset(self):
+        return CartView.objects.filter(owner=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response({'massage': 'Корзина очищена'}, status=status.HTTP_204_NO_CONTENT)
