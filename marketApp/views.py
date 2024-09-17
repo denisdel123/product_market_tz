@@ -1,4 +1,5 @@
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -78,6 +79,7 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
 
 class CartViewCreateAPIView(generics.CreateAPIView):
     serializer_class = CartViewSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user)
@@ -99,6 +101,7 @@ class CartViewCreateAPIView(generics.CreateAPIView):
 class CartViewListAPIView(generics.ListAPIView):
     serializer_class = CartViewListSerializer
     pagination_class = MarketPaginator
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user.pk)
@@ -119,3 +122,39 @@ class CartViewListAPIView(generics.ListAPIView):
         }
 
         return Response(response_data)
+
+
+class CartViewDestroyAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return CartView.objects.filter(owner=self.request.user)
+
+    def get_object(self):
+        product_id = self.kwargs['pk']
+        return get_object_or_404(CartView, owner=self.request.user, product_id=product_id)
+
+    def perform_destroy(self, instance):
+        if instance.quantity > 1:
+            instance.quantity -= 1
+            instance.save()
+            return Response({
+                "message": "Количество товара уменьшено на 1.",
+                "quantity": instance.quantity
+            }, status=status.HTTP_200_OK)
+
+        else:
+            instance.delete()
+            return Response({"message": "Товар удалён из корзины."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class CartViewAllDestroyAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return CartView.objects.filter(owner=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return Response({'massage': 'Корзина очищена'}, status=status.HTTP_204_NO_CONTENT)
