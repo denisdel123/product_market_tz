@@ -149,7 +149,7 @@ class CartViewDestroyAPIView(generics.DestroyAPIView):
 
 
 class CartViewAllDestroyAPIView(generics.DestroyAPIView):
-    permission_classes = IsAuthenticated
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return CartView.objects.filter(owner=self.request.user)
