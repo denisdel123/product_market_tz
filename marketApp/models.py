@@ -84,10 +84,22 @@ class Subcategory(models.Model):
 
 
 class Product(models.Model):
-    photo = models.ImageField(
-        upload_to='product/',
-        verbose_name='Картинка',
-        help_text='Загрузите картинку',
+    image_small = models.ImageField(
+        upload_to='products/small/',
+        verbose_name="Изображение (маленькое)",
+        help_text='Загрузите изображение',
+        **NULLABLE
+    )
+    image_medium = models.ImageField(
+        upload_to='products/medium/',
+        verbose_name="Изображение (среднее)",
+        help_text='Загрузите изображение',
+        **NULLABLE
+    )
+    image_large = models.ImageField(
+        upload_to='products/large/',
+        verbose_name="Изображение (большое)",
+        help_text='Загрузите изображение',
         **NULLABLE
     )
     name = models.CharField(
@@ -97,7 +109,9 @@ class Product(models.Model):
 
     )
 
-    price = models.PositiveIntegerField(
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
         verbose_name='Стоимость',
         help_text='Введите стоимость'
     )
