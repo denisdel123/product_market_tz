@@ -15,7 +15,7 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['photo', 'name', 'price', 'slug', 'associated_subcategory']
+    list_display = ['image_small', 'image_medium', 'image_large', 'name', 'price', 'slug', 'associated_subcategory']
 
 
 @admin.register(CartView)
