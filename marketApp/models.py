@@ -1,5 +1,3 @@
-import re
-
 from django.db import models
 
 from transliterate import translit, slugify
@@ -161,5 +159,3 @@ class CartView(models.Model):
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
         ordering = ['product']
-
-
