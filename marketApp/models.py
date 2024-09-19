@@ -164,11 +164,6 @@ class CartView(models.Model):
     def __str__(self):
         return f'{self.product.name} (x{self.quantity})'
 
-    def get_total_price(self):
-        if self.quantity is not None and self.product.price is not None:
-            return self.quantity * self.product.price
-        return 0
-
     class Meta:
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
