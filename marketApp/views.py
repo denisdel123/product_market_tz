@@ -111,13 +111,13 @@ class CartViewListAPIView(generics.ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
 
         # Подсчитываем общее количество и общую стоимость
-        total_quantity = sum(item.quantity for item in queryset)
-        total_price = sum(item.get_total_price() for item in queryset)
+        total_items = len(serializer.data)
+        total_price = sum(item.quantity * item.product.price for item in queryset)
 
         # Формируем ответ
         response_data = {
             'items': serializer.data,  # Данные корзины
-            'total_quantity': total_quantity,  # Общее количество товаров
+            'total_items': total_items,  # Общее количество товаров
             'total_price': total_price  # Общая стоимость товаров
         }
 
